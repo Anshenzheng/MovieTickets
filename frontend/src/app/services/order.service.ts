@@ -25,6 +25,8 @@ export interface ScreeningInfo {
   startTime: string;
   endTime: string;
   price: number;
+  language?: string;
+  version?: string;
   movie?: MovieInfo;
 }
 

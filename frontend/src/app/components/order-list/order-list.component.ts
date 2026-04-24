@@ -43,12 +43,12 @@ import { OrderService, Order, OrderStatus } from '../../services/order.service';
           
           <div class="order-movie-info" *ngIf="order.screening?.movie">
             <div class="movie-poster-small">
-              <img [src]="order.screening.movie.posterUrl || defaultPoster" alt="{{ order.screening.movie.title }}">
+              <img [src]="order.screening?.movie?.posterUrl || defaultPoster" alt="{{ order.screening?.movie?.title }}">
             </div>
             <div class="movie-details">
-              <h3 class="movie-title">{{ order.screening.movie.title }}</h3>
+              <h3 class="movie-title">{{ order.screening?.movie?.title }}</h3>
               <div class="screening-info">
-                <p><span>📅</span> {{ formatDateTime(order.screening.startTime) }}</p>
+                <p><span>📅</span> {{ formatDateTime(order.screening?.startTime) }}</p>
                 <p><span>💺</span> {{ order.seatCount }} 张票</p>
               </div>
             </div>

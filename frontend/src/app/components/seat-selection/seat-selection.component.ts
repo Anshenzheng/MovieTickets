@@ -56,7 +56,7 @@ import { interval, Subscription } from 'rxjs';
           </div>
 
           <div class="seat-map" *ngIf="seatStatus">
-            <div class="seat-row" *ngFor="let row of seatRows; let rowIndex = index">
+            <div class="seat-row" *ngFor="let rowIndex of rowIndices; let i = index">
               <div class="row-label">{{ rowIndex + 1 }} 排</div>
               <div 
                 class="seat-wrapper" 
@@ -537,6 +537,11 @@ export class SeatSelectionComponent implements OnInit, OnDestroy {
     }
     const maxRow = Math.max(...this.seatStatus.seats.map(s => s.seatRow));
     return maxRow;
+  }
+
+  get rowIndices(): number[] {
+    const rows = this.seatRows;
+    return Array.from({ length: rows }, (_, i) => i);
   }
 
   getSeatsInRow(rowIndex: number): Seat[] {
