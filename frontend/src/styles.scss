@@ -1,0 +1,399 @@
+/* ========== 复古胶片风格主题 ========== */
+:root {
+  --film-brown: #8B4513;
+  --film-dark-brown: #3E2723;
+  --film-light-brown: #D7CCC8;
+  --film-cream: #F5F0E1;
+  --film-gold: #DAA520;
+  --film-dark-gold: #B8860B;
+  --film-red: #8B0000;
+  --film-dark-red: #5C0000;
+  --film-black: #1A1A1A;
+  --film-gray: #4A4A4A;
+  --film-light-gray: #9E9E9E;
+  --film-white: #FFF8E7;
+  
+  --vintage-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  --vintage-border: 3px solid var(--film-dark-brown);
+  --film-grain: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Noto Serif SC', 'Playfair Display', Georgia, serif;
+  background-color: var(--film-cream);
+  background-image: var(--film-grain);
+  color: var(--film-dark-brown);
+  min-height: 100vh;
+}
+
+/* ========== 复古按钮样式 ========== */
+.vintage-btn {
+  background: linear-gradient(145deg, var(--film-gold), var(--film-dark-gold));
+  color: var(--film-white);
+  border: var(--vintage-border);
+  border-radius: 4px;
+  padding: 12px 24px;
+  font-family: 'Noto Serif SC', serif;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  transition: all 0.3s ease;
+  box-shadow: var(--vintage-shadow);
+  position: relative;
+  overflow: hidden;
+}
+
+.vintage-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.vintage-btn:hover::before {
+  left: 100%;
+}
+
+.vintage-btn:hover {
+  background: linear-gradient(145deg, var(--film-dark-gold), var(--film-gold));
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4);
+}
+
+.vintage-btn:active {
+  transform: translateY(0);
+}
+
+.vintage-btn-secondary {
+  background: linear-gradient(145deg, var(--film-brown), var(--film-dark-brown));
+}
+
+.vintage-btn-danger {
+  background: linear-gradient(145deg, var(--film-red), var(--film-dark-red));
+}
+
+.vintage-btn:disabled {
+  background: var(--film-gray);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* ========== 复古卡片样式 ========== */
+.vintage-card {
+  background: linear-gradient(145deg, var(--film-white), var(--film-light-brown));
+  border: var(--vintage-border);
+  border-radius: 8px;
+  padding: 24px;
+  box-shadow: var(--vintage-shadow);
+  position: relative;
+}
+
+.vintage-card::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  bottom: 10px;
+  border: 2px dashed var(--film-brown);
+  border-radius: 4px;
+  pointer-events: none;
+  opacity: 0.3;
+}
+
+/* ========== 复古输入框样式 ========== */
+.vintage-input {
+  width: 100%;
+  padding: 14px 18px;
+  font-family: 'Noto Serif SC', serif;
+  font-size: 16px;
+  border: 2px solid var(--film-brown);
+  border-radius: 4px;
+  background: var(--film-white);
+  color: var(--film-dark-brown);
+  transition: all 0.3s ease;
+}
+
+.vintage-input:focus {
+  outline: none;
+  border-color: var(--film-gold);
+  box-shadow: 0 0 0 3px rgba(218, 165, 32, 0.3);
+}
+
+.vintage-input::placeholder {
+  color: var(--film-light-gray);
+}
+
+/* ========== 标题样式 ========== */
+.film-title {
+  font-family: 'Playfair Display', 'Noto Serif SC', serif;
+  color: var(--film-dark-brown);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
+  display: inline-block;
+}
+
+.film-title::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 60%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--film-gold), transparent);
+}
+
+/* ========== 导航栏样式 ========== */
+.film-navbar {
+  background: linear-gradient(180deg, var(--film-dark-brown), var(--film-black));
+  border-bottom: 4px solid var(--film-gold);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+.film-navbar::before {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--film-gold) 0px,
+    var(--film-gold) 10px,
+    var(--film-dark-brown) 10px,
+    var(--film-dark-brown) 20px
+  );
+}
+
+/* ========== 电影海报样式 ========== */
+.film-poster {
+  position: relative;
+  border: 8px solid var(--film-dark-brown);
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: var(--vintage-shadow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.film-poster::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border: 2px solid var(--film-gold);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.film-poster::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: var(--film-grain);
+  opacity: 0.3;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.film-poster:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* ========== 座位样式 ========== */
+.seat {
+  width: 36px;
+  height: 36px;
+  border: 2px solid var(--film-dark-brown);
+  border-radius: 8px 8px 4px 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: bold;
+  position: relative;
+}
+
+.seat.available {
+  background: linear-gradient(145deg, var(--film-light-brown), var(--film-cream));
+}
+
+.seat.available:hover {
+  background: linear-gradient(145deg, var(--film-gold), var(--film-dark-gold));
+  transform: translateY(-3px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.seat.selected {
+  background: linear-gradient(145deg, var(--film-gold), var(--film-dark-gold));
+  color: var(--film-white);
+  transform: translateY(-3px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.seat.sold {
+  background: linear-gradient(145deg, var(--film-gray), var(--film-dark-brown));
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.seat.locked {
+  background: linear-gradient(145deg, var(--film-red), var(--film-dark-red));
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.seat.my-locked {
+  background: linear-gradient(145deg, var(--film-gold), #9ACD32);
+  color: var(--film-white);
+}
+
+/* ========== 屏幕样式 ========== */
+.screen {
+  background: linear-gradient(180deg, var(--film-white) 0%, var(--film-light-brown) 100%);
+  border: 4px solid var(--film-dark-brown);
+  border-radius: 4px;
+  text-align: center;
+  padding: 15px;
+  margin-bottom: 40px;
+  position: relative;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  transform: perspective(500px) rotateX(-20deg);
+}
+
+.screen::before {
+  content: '';
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  right: 5px;
+  bottom: 5px;
+  border: 2px dashed var(--film-brown);
+  border-radius: 2px;
+  pointer-events: none;
+}
+
+/* ========== 胶卷孔样式 ========== */
+.film-perforations {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 10px;
+  margin: 10px 0;
+}
+
+.film-perforations span {
+  width: 8px;
+  height: 8px;
+  background: var(--film-dark-brown);
+  border-radius: 2px;
+}
+
+/* ========== 状态标签样式 ========== */
+.status-badge {
+  display: inline-block;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.status-pending {
+  background: linear-gradient(145deg, #FFD700, #DAA520);
+  color: var(--film-dark-brown);
+}
+
+.status-paid {
+  background: linear-gradient(145deg, #32CD32, #228B22);
+  color: var(--film-white);
+}
+
+.status-cancelled {
+  background: linear-gradient(145deg, var(--film-red), var(--film-dark-red));
+  color: var(--film-white);
+}
+
+/* ========== 分隔线样式 ========== */
+.vintage-divider {
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--film-gold), var(--film-dark-gold), var(--film-gold), transparent);
+  margin: 30px 0;
+  position: relative;
+}
+
+.vintage-divider::before,
+.vintage-divider::after {
+  content: '◆';
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--film-gold);
+  font-size: 12px;
+}
+
+.vintage-divider::before {
+  left: 10%;
+}
+
+.vintage-divider::after {
+  right: 10%;
+}
+
+/* ========== 动画效果 ========== */
+@keyframes film-roll {
+  0% { opacity: 0; transform: translateY(-20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.film-enter {
+  animation: film-roll 0.5s ease-out;
+}
+
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.95; }
+}
+
+.film-flicker {
+  animation: flicker 0.1s infinite;
+}
+
+/* ========== 响应式布局 ========== */
+@media (max-width: 768px) {
+  .vintage-card {
+    padding: 16px;
+  }
+  
+  .vintage-btn {
+    padding: 10px 18px;
+    font-size: 14px;
+  }
+  
+  .seat {
+    width: 28px;
+    height: 28px;
+    font-size: 8px;
+  }
+}
