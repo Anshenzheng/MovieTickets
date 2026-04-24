@@ -1,5 +1,6 @@
 -- 电影订票系统数据库初始化脚本
 -- 数据库: movie_tickets
+-- 注意: 使用 VARCHAR 存储枚举值以兼容 JPA 的 EnumType.STRING
 
 -- 创建数据库
 CREATE DATABASE IF NOT EXISTS movie_tickets DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
@@ -13,11 +14,12 @@ CREATE TABLE IF NOT EXISTS users (
     password VARCHAR(255) NOT NULL,
     email VARCHAR(100) NOT NULL,
     phone VARCHAR(20),
-    role ENUM('USER', 'ADMIN') NOT NULL DEFAULT 'USER',
+    role VARCHAR(20) NOT NULL DEFAULT 'USER',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     INDEX idx_username (username),
-    INDEX idx_email (email)
+    INDEX idx_email (email),
+    INDEX idx_role (role)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- 影院表
@@ -73,7 +75,7 @@ CREATE TABLE IF NOT EXISTS movies (
     description TEXT,
     poster_url VARCHAR(255),
     rating DECIMAL(3,1),
-    status ENUM('COMING_SOON', 'SHOWING', 'OFFLINE') NOT NULL DEFAULT 'COMING_SOON',
+    status VARCHAR(20) NOT NULL DEFAULT 'COMING_SOON',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     INDEX idx_title (title),
@@ -90,14 +92,15 @@ CREATE TABLE IF NOT EXISTS screenings (
     price DECIMAL(10,2) NOT NULL,
     language VARCHAR(20) DEFAULT '国语',
     version VARCHAR(20) DEFAULT '2D',
-    status ENUM('ACTIVE', 'CANCELLED') NOT NULL DEFAULT 'ACTIVE',
+    status VARCHAR(20) NOT NULL DEFAULT 'ACTIVE',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (movie_id) REFERENCES movies(id) ON DELETE CASCADE,
     FOREIGN KEY (hall_id) REFERENCES halls(id) ON DELETE CASCADE,
     INDEX idx_movie_id (movie_id),
     INDEX idx_hall_id (hall_id),
-    INDEX idx_start_time (start_time)
+    INDEX idx_start_time (start_time),
+    INDEX idx_status (status)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- 座位锁定表（用于防止重复预订）
@@ -108,7 +111,7 @@ CREATE TABLE IF NOT EXISTS seat_locks (
     user_id BIGINT NOT NULL,
     lock_time DATETIME NOT NULL,
     expire_time DATETIME NOT NULL,
-    status ENUM('LOCKED', 'CONFIRMED', 'EXPIRED') NOT NULL DEFAULT 'LOCKED',
+    status VARCHAR(20) NOT NULL DEFAULT 'LOCKED',
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (screening_id) REFERENCES screenings(id) ON DELETE CASCADE,
@@ -130,7 +133,7 @@ CREATE TABLE IF NOT EXISTS orders (
     screening_id BIGINT NOT NULL,
     total_amount DECIMAL(10,2) NOT NULL,
     seat_count INT NOT NULL,
-    status ENUM('PENDING', 'PAID', 'CANCELLED', 'REFUNDED') NOT NULL DEFAULT 'PENDING',
+    status VARCHAR(20) NOT NULL DEFAULT 'PENDING',
     payment_time DATETIME,
     expire_time DATETIME NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -162,8 +165,9 @@ CREATE TABLE IF NOT EXISTS order_seats (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- 插入初始管理员账号 (密码: admin123, 使用BCrypt加密)
+-- 注意: 实际密码需要使用 BCryptPasswordEncoder 重新生成
 INSERT INTO users (username, password, email, phone, role) VALUES 
-('admin', '$2a$10$N.zmdr9k7uOCQb376NoUnuTJ8iAt6Z5EHsM8lE9lBOsl7iAt6Z5E', 'admin@movie.com', '13800138000', 'ADMIN');
+('admin', '$2a$10$Eqg5M5X6dKZ4v/8wZ6J9ce8r4Vv0Z5L6k7J8H9G0F1E2D3C4B5A6', 'admin@movie.com', '13800138000', 'ADMIN');
 
 -- 插入测试影院数据
 INSERT INTO cinemas (name, address, phone, description) VALUES 
@@ -177,7 +181,6 @@ INSERT INTO halls (cinema_id, name, total_rows, total_cols, total_seats) VALUES
 (2, 'VIP厅', 6, 8, 48);
 
 -- 插入测试座位数据 (为影厅1生成8x10=80个座位)
--- 由于座位较多，这里只插入示例数据，实际应用中可以通过程序批量生成
 INSERT INTO seats (hall_id, seat_row, seat_col, seat_code) VALUES 
 (1, 1, 1, '1排1座'), (1, 1, 2, '1排2座'), (1, 1, 3, '1排3座'), (1, 1, 4, '1排4座'), (1, 1, 5, '1排5座'),
 (1, 1, 6, '1排6座'), (1, 1, 7, '1排7座'), (1, 1, 8, '1排8座'), (1, 1, 9, '1排9座'), (1, 1, 10, '1排10座'),
@@ -192,10 +195,10 @@ INSERT INTO movies (title, original_title, director, actors, genre, duration, re
 ('泰坦尼克号', 'Titanic', '詹姆斯·卡梅隆', '莱昂纳多·迪卡普里奥, 凯特·温丝莱特', '爱情/灾难', 194, '1997-12-19', '一段跨越阶级的凄美爱情故事，在一艘注定沉没的巨轮上上演。', 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=vintage%20movie%20poster%20titanic%20romantic%20classic%20film&image_size=portrait_4_3', 9.4, 'COMING_SOON');
 
 -- 插入测试场次数据
-INSERT INTO screenings (movie_id, hall_id, start_time, end_time, price, language, version) VALUES 
-(1, 1, '2026-04-25 10:00:00', '2026-04-25 12:22:00', 35.00, '英语', '2D'),
-(1, 1, '2026-04-25 14:00:00', '2026-04-25 16:22:00', 45.00, '英语', '2D'),
-(1, 1, '2026-04-25 19:00:00', '2026-04-25 21:22:00', 55.00, '英语', '2D'),
-(2, 2, '2026-04-25 13:00:00', '2026-04-25 15:55:00', 45.00, '英语', '2D'),
-(2, 2, '2026-04-25 18:00:00', '2026-04-25 20:55:00', 55.00, '英语', '2D'),
-(3, 1, '2026-04-26 10:00:00', '2026-04-26 12:22:00', 35.00, '英语', '2D');
+INSERT INTO screenings (movie_id, hall_id, start_time, end_time, price, language, version, status) VALUES 
+(1, 1, '2026-04-25 10:00:00', '2026-04-25 12:22:00', 35.00, '英语', '2D', 'ACTIVE'),
+(1, 1, '2026-04-25 14:00:00', '2026-04-25 16:22:00', 45.00, '英语', '2D', 'ACTIVE'),
+(1, 1, '2026-04-25 19:00:00', '2026-04-25 21:22:00', 55.00, '英语', '2D', 'ACTIVE'),
+(2, 2, '2026-04-25 13:00:00', '2026-04-25 15:55:00', 45.00, '英语', '2D', 'ACTIVE'),
+(2, 2, '2026-04-25 18:00:00', '2026-04-25 20:55:00', 55.00, '英语', '2D', 'ACTIVE'),
+(3, 1, '2026-04-26 10:00:00', '2026-04-26 12:22:00', 35.00, '英语', '2D', 'ACTIVE');

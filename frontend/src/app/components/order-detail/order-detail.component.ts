@@ -32,18 +32,18 @@ import { OrderService, Order, OrderStatus, OrderSeat } from '../../services/orde
 
             <div class="movie-section" *ngIf="order.screening?.movie">
               <div class="movie-poster-large">
-                <img [src]="order.screening.movie.posterUrl || defaultPoster" alt="{{ order.screening.movie.title }}">
+                <img [src]="order.screening?.movie?.posterUrl || defaultPoster" alt="{{ order.screening?.movie?.title }}">
               </div>
               <div class="movie-info">
-                <h2 class="movie-title">{{ order.screening.movie.title }}</h2>
+                <h2 class="movie-title">{{ order.screening?.movie?.title }}</h2>
                 <div class="movie-meta">
-                  <p *ngIf="order.screening.movie.genre">
+                  <p *ngIf="order.screening?.movie?.genre">
                     <span class="meta-label">类型:</span>
-                    <span>{{ order.screening.movie.genre }}</span>
+                    <span>{{ order.screening?.movie?.genre }}</span>
                   </p>
-                  <p *ngIf="order.screening.movie.duration">
+                  <p *ngIf="order.screening?.movie?.duration">
                     <span class="meta-label">片长:</span>
-                    <span>{{ order.screening.movie.duration }} 分钟</span>
+                    <span>{{ order.screening?.movie?.duration }} 分钟</span>
                   </p>
                 </div>
               </div>

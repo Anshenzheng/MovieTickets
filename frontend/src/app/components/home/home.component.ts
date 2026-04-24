@@ -40,7 +40,7 @@ import { MovieService, Movie, MovieStatus } from '../../services/movie.service';
           <div class="movie-card-wrapper" *ngFor="let movie of showingMovies">
             <div class="movie-card" (click)="goToMovieDetail(movie.id)">
               <div class="film-poster movie-poster">
-                <img [src]="movie.posterUrl || defaultPoster" alt="{{ movie.title }}" [error]="onImageError($event)">
+                <img [src]="movie.posterUrl || defaultPoster" alt="{{ movie.title }}" (error)="onImageError($event)">
               </div>
               <div class="movie-info">
                 <h3 class="movie-title">{{ movie.title }}</h3>
@@ -72,7 +72,7 @@ import { MovieService, Movie, MovieStatus } from '../../services/movie.service';
             <div class="movie-card coming-soon-card">
               <div class="film-poster movie-poster">
                 <div class="coming-soon-badge">即将上映</div>
-                <img [src]="movie.posterUrl || defaultPoster" alt="{{ movie.title }}" [error]="onImageError($event)">
+                <img [src]="movie.posterUrl || defaultPoster" alt="{{ movie.title }}" (error)="onImageError($event)">
               </div>
               <div class="movie-info">
                 <h3 class="movie-title">{{ movie.title }}</h3>

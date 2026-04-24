@@ -32,6 +32,8 @@ export interface MovieInfo {
   id: number;
   title: string;
   posterUrl?: string;
+  duration?: number;
+  genre?: string;
 }
 
 export interface OrderSeat {
