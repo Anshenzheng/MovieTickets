@@ -70,7 +70,7 @@ import { MovieService, Movie, MovieStatus } from '../../services/movie.service';
               <div class="status-badge" [ngClass]="getStatusClass(movie.status)">
                 {{ getStatusText(movie.status) }}
               </div>
-              <img [src]="movie.posterUrl || defaultPoster" alt="{{ movie.title }}" [error]="onImageError($event)">
+              <img [src]="movie.posterUrl || defaultPoster" alt="{{ movie.title }}" (error)="onImageError($event)">
             </div>
             <div class="movie-info">
               <h3 class="movie-title">{{ movie.title }}</h3>

@@ -11,7 +11,7 @@ import { AuthService } from '../../services/auth.service';
       <div class="movie-header">
         <div class="movie-poster-wrapper">
           <div class="film-poster movie-poster">
-            <img [src]="movie.posterUrl || defaultPoster" alt="{{ movie.title }}" [error]="onImageError($event)">
+            <img [src]="movie.posterUrl || defaultPoster" alt="{{ movie.title }}" (error)="onImageError($event)">
           </div>
         </div>
         

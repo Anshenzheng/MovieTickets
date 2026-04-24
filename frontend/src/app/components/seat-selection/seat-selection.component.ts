@@ -18,7 +18,7 @@ import { interval, Subscription } from 'rxjs';
       <div class="selection-layout">
         <div class="movie-info-card vintage-card">
           <div class="movie-poster-small">
-            <img [src]="movie.posterUrl || defaultPoster" alt="{{ movie.title }}" [error]="onImageError($event)">
+            <img [src]="movie.posterUrl || defaultPoster" alt="{{ movie.title }}" (error)="onImageError($event)">
           </div>
           <div class="movie-details">
             <h2 class="movie-title">{{ movie.title }}</h2>
